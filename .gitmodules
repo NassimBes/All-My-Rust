@@ -1,0 +1,4 @@
+[submodule "ZeroToHeroRust"]
+	path = ZeroToHeroRust
+	url = https://github.com/NassimBes/ZeroToHeroRust.git
+	branch = nassim_activities
