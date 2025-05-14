@@ -1,12 +1,23 @@
+use color_eyre::{
+    eyre::{bail, WrapErr},
+    Result,
+};
 
-use std::io;
 pub mod app;
 use app::App;
 
-fn main() -> io::Result<()> {
-    let mut terminal: ratatui::Terminal<ratatui::prelude::CrosstermBackend<io::Stdout>> = ratatui::init();
+
+
+fn main() -> Result<()> {
+    color_eyre::install()?;
+    let mut terminal = app::tui::init()?;
     let app_result = App::default().run(&mut terminal);
-    ratatui::restore();
+    if let Err(err) = app::tui::restore() {
+        eprintln!(
+            "failed to restore terminal. Run `reset` or restart your terminal to recover: {}",
+            err
+        );
+    }
     app_result
 }
 
