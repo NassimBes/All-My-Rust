@@ -13,8 +13,9 @@ fn main() {
     let string1 = String::from("long string is long");
     let result;
     {
-        let string2 = "xyz";
-        result = longest(&string1, string2);
+        let string2 = String::from("xyz");
+        result = longest(&string1, &string2);
+        println!("The longest string is '{result}'");
     }
-    println!("The longest string is '{result}'");
+    
 }
