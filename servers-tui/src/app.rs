@@ -16,26 +16,20 @@ pub struct App{
     exit: bool
 }
 
+#[derive(Debug,Default)]
+pub struct ChatRooms;
 
-struct ChatRooms<'a>{
-    frame:  &'a mut Frame<'a>
-}
-
-impl<'a> ChatRooms<'a>{
-    fn new(f: &'a mut Frame<'a>) -> Self{
-        ChatRooms {frame: f}
-    }
-
-    fn render(&'a mut self){
+impl ChatRooms{
+    pub fn render(frame: &mut Frame){
         let layout = Layout::new(
         Direction::Horizontal, 
         [Constraint::Percentage(10),Constraint::Percentage(80),Constraint::Percentage(10)],
         )
-        .split(self.frame.area());
+        .split(frame.area());
 
-        Self::render_rooms_block(self.frame,&layout);
-        // Self::render_chatroom_block(self.frame,&layout);
-        // Self::render_chatter_block(self.frame,&layout);
+        Self::render_rooms_block(frame,&layout);
+        Self::render_chatroom_block(frame,&layout);
+        Self::render_chatter_block(frame,&layout);
     }
 
     fn render_rooms_block(frame: &mut Frame, layout: &Rc<[Rect]> ){  
@@ -81,9 +75,8 @@ impl<'a> ChatRooms<'a>{
 
 impl App{
     pub fn run(&mut self, mut terminal: Terminal<CrosstermBackend<std::io::Stdout>>) -> Result<()>{
-        let rooms = ChatRooms::new;
         while !self.exit {
-            terminal.draw(rooms)?;
+            terminal.draw(ChatRooms::render)?;
             self.handle_events()?;
         }
         Ok(())
