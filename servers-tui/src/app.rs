@@ -7,23 +7,30 @@ use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind};
 
 
 pub mod chatrooms;
+pub mod menu;
+
+use menu::Menu;
 
 use chatrooms::{
-    ChatRooms,
-    chatroomstate::ChatRoomState
+    // ChatRooms,
+    selectorstate::SelectorState
 };
+
+
 
 #[derive(Debug,Default)]
 pub struct App{
     exit: bool,
-    chatroomstate: ChatRoomState
+    selectorstate: SelectorState
 }
 
 impl App{
-    pub fn run(&mut self, mut terminal: Terminal<CrosstermBackend<std::io::Stdout>>) -> Result<()>{
-        self.chatroomstate.list_state.select(Some(0));
+    #[allow(unused_variables)]
+    pub fn run(&mut self, mut terminal: Terminal<CrosstermBackend<std::io::Stdout>>, min_width:u16, min_height: u16) -> Result<()>{
+        self.selectorstate.list_state.select_first();
         while !self.exit {
-            terminal.draw(|f| ChatRooms::render(f, &mut self.chatroomstate))?;
+            // terminal.draw(|f| ChatRooms::render(f, &mut self.selectorstate, min_width, min_height))?;
+            terminal.draw(|f| Menu::render(f, &mut self.selectorstate))?;
             self.handle_events()?;
         }
         Ok(())
@@ -43,15 +50,15 @@ impl App{
     fn handle_key_event(&mut self, key_event: KeyEvent) {
         match key_event.code {
             KeyCode::Esc => self.exit(),
-            KeyCode::Down => self.chatroomstate.next(),
-            KeyCode::Up => self.chatroomstate.previous(),
+            KeyCode::Down => self.selectorstate.next(),
+            KeyCode::Up => self.selectorstate.previous(),
             _ => {}
         }
     }
 
     fn exit(&mut self){
         self.exit = true;
+        
     }
-
     
 }

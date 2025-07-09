@@ -1,22 +1,20 @@
-
 use ratatui::{
         layout::{self, Constraint, Direction, Layout, Rect}, style::{Color, Style}, widgets::{Block, List, ListItem, Paragraph}, Frame
 };
 use std::rc::Rc;
 
-pub mod chatroomstate;
+pub mod selectorstate;
 
-use chatroomstate::ChatRoomState;
+use selectorstate::SelectorState;
 
-const MIN_WIDTH: u16 = 80;
-const MIN_HEIGHT: u16 = 24;
+
 
 #[derive(Debug,Default)]
 pub struct ChatRooms;
 
 impl ChatRooms{
-    pub fn render(frame: &mut Frame,states: &mut ChatRoomState){
-        if frame.area().width > MIN_WIDTH && frame.area().height > MIN_HEIGHT {
+    pub fn render(frame: &mut Frame,states: &mut SelectorState, min_width: u16, min_height: u16){
+        if frame.area().width > min_width && frame.area().height > min_height {
             
             let layout = Layout::new(
             Direction::Horizontal, 
@@ -51,7 +49,7 @@ impl ChatRooms{
 
     // ListState
     // render_stateful_widget
-    fn render_rooms_block(frame: &mut Frame, layout: &Rc<[Rect]>, states : &mut ChatRoomState){  
+    fn render_rooms_block(frame: &mut Frame, layout: &Rc<[Rect]>, states : &mut SelectorState){  
         let chatrooms = vec!["Total","Total","Total","Total","Total"];
         
         let binding = chatrooms.iter().map(|&f| {
@@ -68,7 +66,7 @@ impl ChatRooms{
         )
         .highlight_symbol(">")
         .highlight_spacing(ratatui::widgets::HighlightSpacing::Always),
-         layout[0],
+        layout[0],
         &mut states.list_state
         );        
         
@@ -90,10 +88,14 @@ impl ChatRooms{
     Paragraph::default()
                 .block(
                     Block::bordered()
-                        .title("Users in Current Chat room")
+                        .title("Chatters")
                         .title_alignment(layout::Alignment::Center)
                 )
         , layout[2]);
     }
+
+    
+
+
     
 }
