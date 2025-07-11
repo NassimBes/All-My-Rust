@@ -7,12 +7,10 @@ use ratatui::{
 const SELECTED_STYLE: Style = Style::new().bg(SLATE.c800).add_modifier(Modifier::BOLD);
 
 
-use crate::app::chatrooms::selectorstate::SelectorState;
+use crate::app::chatrooms::selectorstate::{
+    SelectorState,
+};
 
-
-
-
-const MENUITEMS: [&str; 3] = ["Join Server","Create Server","Exit"];
 
 
 #[derive(Debug,Default)]
@@ -30,9 +28,9 @@ impl Menu{
     }
 
     fn render_menu(frame: &mut Frame,area: &Rect, states: &mut SelectorState){
-        // let menu_items = vec!["Join Server","Create Server","Exit"];
+        let menu_items = vec!["Join Server","Create Server","Exit"];
         
-        let binding = MENUITEMS.iter().map(|&f| {
+        let binding = menu_items.iter().map(|&f| {
             ListItem::new(f)
             .style(Style::default().fg(Color::Green))
         });

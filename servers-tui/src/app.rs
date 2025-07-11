@@ -1,21 +1,16 @@
 use color_eyre::{eyre::Ok, Result};
 use ratatui::{
-    prelude::CrosstermBackend, Terminal
+    prelude::CrosstermBackend,
+    Terminal
 };
 use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind};
 
-
-
 pub mod chatrooms;
-pub mod menu;
-
-use menu::Menu;
 
 use chatrooms::{
-    // ChatRooms,
+    ChatRooms,
     selectorstate::SelectorState
 };
-
 
 
 #[derive(Debug,Default)]
@@ -28,9 +23,10 @@ impl App{
     #[allow(unused_variables)]
     pub fn run(&mut self, mut terminal: Terminal<CrosstermBackend<std::io::Stdout>>, min_width:u16, min_height: u16) -> Result<()>{
         self.selectorstate.list_state.select_first();
+        let mut chatroom = ChatRooms::default();
         while !self.exit {
-            // terminal.draw(|f| ChatRooms::render(f, &mut self.selectorstate, min_width, min_height))?;
-            terminal.draw(|f| Menu::render(f, &mut self.selectorstate))?;
+            terminal.draw(|f| chatroom.render(f, &mut self.selectorstate, min_width, min_height))?;
+            // terminal.draw(|f| Menu::render(f, &mut self.selectorstate))?;
             self.handle_events()?;
         }
         Ok(())
