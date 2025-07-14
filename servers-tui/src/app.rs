@@ -5,7 +5,7 @@ use ratatui::{
 };
 use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind};
 
-pub mod chatrooms;
+mod chatrooms;
 
 use chatrooms::{
     ChatRooms,

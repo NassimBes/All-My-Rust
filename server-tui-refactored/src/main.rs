@@ -5,17 +5,17 @@ use ratatui::{
 };
 
 mod app;
-use app::App;
+use app::Application::App;
 
 
-const MIN_WIDTH: u16 = 80;
-const MIN_HEIGHT: u16 = 24;
+// const MIN_WIDTH: u16 = 80;
+// const MIN_HEIGHT: u16 = 24;
 
 fn main() -> Result<()>{
    color_eyre::install()?;
    let terminal: Terminal<CrosstermBackend<std::io::Stdout>> = ratatui::init();
    
-   let result = App::default().run(terminal,MIN_WIDTH,MIN_HEIGHT);
+   let result = App::default().run(terminal);
 
    
    ratatui::restore();
