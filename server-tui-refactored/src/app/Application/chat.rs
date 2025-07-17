@@ -1,17 +1,12 @@
-
-
 use std::rc::Rc;
 
-use color_eyre::eyre::Ok;
+
 use ratatui::{
     layout::{self, Constraint, Direction, Layout, Rect},
     style::{palette::tailwind::SLATE, Color, Modifier, Style},
-    widgets::{Block, HighlightSpacing, List, ListItem, ListState, Paragraph},
+    widgets::{Block, List, ListItem, ListState, Paragraph},
     Frame,
 };
-
-
-use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind};
 
 const SELECTED_STYLE: Style = Style::new().bg(SLATE.c800).add_modifier(Modifier::BOLD);
 
@@ -44,6 +39,7 @@ impl ChatState {
         }
     }
 
+    #[allow(dead_code)]
     pub fn selected_item(&self) -> &str {
         self.items[self.selected]
     }
@@ -64,17 +60,11 @@ pub fn render(frame: &mut Frame, area: Rect, state: &ChatState){
         [Constraint::Percentage(10),Constraint::Percentage(80),Constraint::Percentage(10)],
 
         )
-        .split(frame.area());
+        .split(area);
     
     render_chatrooms(frame,&layout,items.clone(),&mut list_state);
     render_messageboard(frame,&layout,items.clone(),&mut list_state, state);   
-    render_chatters(frame,&layout,items.clone(),&mut list_state);   
-
-     
-
-        
-
-    
+    render_chatters(frame,&layout,items.clone(),&mut list_state);      
 }
 
 
@@ -93,7 +83,7 @@ fn render_chatrooms(frame: &mut Frame, layout: &Rc<[Rect]>,items: Vec<ListItem>,
 }
 
 
-fn render_messageboard(frame: &mut Frame, layout: &Rc<[Rect]>, items: Vec<ListItem>, mut list_state: &mut ListState, state: &ChatState){
+fn render_messageboard(frame: &mut Frame, layout: &Rc<[Rect]>, _items: Vec<ListItem>, mut _list_state: &mut ListState, state: &ChatState){
     // Message Board
     frame.render_widget(
 Paragraph::default()
@@ -131,7 +121,7 @@ Paragraph::default()
         middle_chunks[1]);
 }
 
-fn render_chatters(frame: &mut Frame, layout: &Rc<[Rect]>, items: Vec<ListItem>, mut list_state: &mut ListState){
+fn render_chatters(frame: &mut Frame, layout: &Rc<[Rect]>, _items: Vec<ListItem>, mut _list_state: &mut ListState){
 // Connected Users in the Selected Chat 
     frame.render_widget(
 Paragraph::default()

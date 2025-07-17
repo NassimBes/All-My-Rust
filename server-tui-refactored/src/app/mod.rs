@@ -1,10 +1,12 @@
-pub mod Application{
+pub mod application{
     use color_eyre::{eyre::Ok, Result};
     use ratatui::{
         prelude::CrosstermBackend,
         Terminal,
         Frame
     };
+
+    #[allow(unused_imports)]
     use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind};
 
     mod menu;
@@ -17,6 +19,7 @@ pub mod Application{
     
     
     #[derive(Debug,PartialEq,Eq,Clone,Copy)]
+    #[allow(dead_code)]
     pub enum Screen {
         Menu,
         ChatSelector,
@@ -44,6 +47,7 @@ pub mod Application{
     }
     impl App{
         pub fn run(&mut self, mut terminal: Terminal<CrosstermBackend<std::io::Stdout>>) -> Result<()>{
+            self.screen = Screen::Menu;
             while !self.exit {
                 terminal.draw(|frame| self.render(frame))?;
                 self.handle_event()?;

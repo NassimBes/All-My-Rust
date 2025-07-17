@@ -1,4 +1,4 @@
-use color_eyre::eyre::Ok;
+// use color_eyre::eyre::Ok;
 use ratatui::{
     layout::{self, Rect},
     style::{palette::tailwind::SLATE, Color, Modifier, Style},
@@ -6,8 +6,6 @@ use ratatui::{
     Frame,
 };
 
-
-use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind};
 
 const SELECTED_STYLE: Style = Style::new().bg(SLATE.c800).add_modifier(Modifier::BOLD);
 
