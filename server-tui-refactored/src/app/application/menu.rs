@@ -48,6 +48,7 @@ pub fn render(frame: &mut Frame, area: Rect, state: &MenuState) {
         .iter()
         .map(|&i| ListItem::new(i).style(Style::default().fg(Color::Green)))
         .collect();
+    
 
     let mut list_state = ListState::default();
     list_state.select(Some(state.selected));
@@ -62,8 +63,15 @@ pub fn render(frame: &mut Frame, area: Rect, state: &MenuState) {
             .highlight_style(SELECTED_STYLE)
             .highlight_symbol(">")
             .highlight_spacing(HighlightSpacing::Always),
-        area,
+        center(area, layout::Constraint::Length(20), layout::Constraint::Length(20)),
         &mut list_state,
     );
 }
 
+fn center(area: Rect, horizontal: layout::Constraint, vertical: layout::Constraint) -> Rect {
+    let [area] = layout::Layout::horizontal([horizontal])
+        .flex(layout::Flex::Center)
+        .areas(area);
+    let [area] = layout::Layout::vertical([vertical]).flex(layout::Flex::Center).areas(area);
+    area
+}
