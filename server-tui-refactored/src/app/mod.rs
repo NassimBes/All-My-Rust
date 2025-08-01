@@ -108,8 +108,15 @@ pub mod application{
 
         fn handle_chat_input(&mut self, code: KeyCode){
             match code {
+                // Chunk of code need to be nested inside a KeyCode for cursor selector
+                // Meaning, check where cursor is, and if press enter, make the current box usable
+                // If pressing Esc, go back to selection cursor mode
+                // So the cursor need to check if a box is up/down/left/right to move if not cursor stay put
+                // Note to self : Add popup to make sure you want to exit THE CHAT when pressing ESC in cursor mode
                 KeyCode::Up => self.chat_state.previous(),
                 KeyCode::Down => self.chat_state.next(),
+                KeyCode::Left => self.chat_state.next(),
+                KeyCode::Right => self.chat_state.previous(),
                 KeyCode::Char(c) => self.chat_state.input.push(c),
                 KeyCode::Backspace => { self.chat_state.input.pop(); },
                 KeyCode::Enter => {

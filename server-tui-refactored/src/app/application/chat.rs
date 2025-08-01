@@ -14,6 +14,7 @@ const SELECTED_STYLE: Style = Style::new().bg(SLATE.c800).add_modifier(Modifier:
 pub struct ChatState{
     items: Vec<&'static str>,
     pub input: String,
+    pub send: String,
     selected: usize,
 }
 
@@ -22,6 +23,7 @@ impl Default for ChatState{
         Self { 
             items: vec!["Room 1".into(), "Room 2".into(), "Room 3".into(), "Room 4".into()],
             input: String::new(),
+            send: String::new(),
             selected: 0 }
     }
 }
