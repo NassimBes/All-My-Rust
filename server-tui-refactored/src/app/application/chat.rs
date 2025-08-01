@@ -2,9 +2,9 @@ use std::rc::Rc;
 
 
 use ratatui::{
-    layout::{self, Constraint, Direction, Layout, Rect},
+    layout::{self, Constraint, Direction, Layout, Margin, Rect},
     style::{palette::tailwind::SLATE, Color, Modifier, Style},
-    widgets::{Block, List, ListItem, ListState, Paragraph},
+    widgets::{Block, List, ListItem, ListState, Paragraph, Scrollbar, ScrollbarState},
     Frame,
 };
 
@@ -85,6 +85,7 @@ fn render_chatrooms(frame: &mut Frame, layout: &Rc<[Rect]>,items: Vec<ListItem>,
 
 fn render_messageboard(frame: &mut Frame, layout: &Rc<[Rect]>, _items: Vec<ListItem>, mut _list_state: &mut ListState, state: &ChatState){
     // Message Board
+
     frame.render_widget(
 Paragraph::default()
             .block(
@@ -102,15 +103,42 @@ Paragraph::default()
         ])
         .split(layout[1]);
 
+    
+    render_chatbox(frame, middle_chunks[0]);
+    render_chatinput(frame, middle_chunks[1], state);
+    
+}
+
+
+fn render_chatbox(frame: &mut Frame, middle_chunks: Rect){
+    let vertical_scroll: usize = 0;
+    let scrollbar= Scrollbar::new(ratatui::widgets::ScrollbarOrientation::VerticalRight)
+    .begin_symbol(Some("↑"))
+    .end_symbol(Some("↓"));
+    
+    let mut scrollbar_state = ScrollbarState::new(["A","B"].len()).position(vertical_scroll);
+
     frame.render_widget(Paragraph::default()
+            .scroll((vertical_scroll as u16, 0))
             .block(
                 Block::bordered()
                 .title("Messages")
                 .title_alignment(layout::Alignment::Center)
             )
         ,
-        middle_chunks[0]);
+        middle_chunks);
+    frame.render_stateful_widget(
+        scrollbar,
+         middle_chunks.inner(
+            Margin{
+                horizontal : 0,
+                vertical: 1
+            }
+        ), 
+    &mut scrollbar_state);
+}
 
+fn render_chatinput(frame: &mut Frame, middle_chunks: Rect, state: &ChatState){
     frame.render_widget(Paragraph::new(state.input.as_str())
             .block(
                 Block::bordered()
@@ -118,7 +146,7 @@ Paragraph::default()
                 .title_alignment(layout::Alignment::Center)
             )
         ,
-        middle_chunks[1]);
+        middle_chunks);
 }
 
 fn render_chatters(frame: &mut Frame, layout: &Rc<[Rect]>, _items: Vec<ListItem>, mut _list_state: &mut ListState){
